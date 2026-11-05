@@ -17,12 +17,13 @@ section{padding:75px 0}.eyebrow2{color:var(--accent);font-size:11px;letter-spaci
 footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 @media(max-width:760px){.navlinks{display:none}.heroGrid,.two{grid-template-columns:1fr}.photo{margin:20px 0 0;max-width:330px;aspect-ratio:5/4}.grid,.cards{grid-template-columns:1fr}.statsGrid{grid-template-columns:1fr}.stat{border-bottom:1px solid var(--line);padding:10px 0}.stat:last-child{border:0}.hero{padding:60px 0}.wrap{width:calc(100% - 30px)}}
 .card.award img {
+  display: block;
   width: 100%;
-  height: auto;
-  max-height: none;
+  height: auto !important;
+  max-height: none !important;
   object-fit: contain;
-}
-</style>
+  object-position: center;
+}</style>
 <script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
