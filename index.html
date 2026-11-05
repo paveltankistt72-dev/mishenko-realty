@@ -50,7 +50,7 @@ const ready = window.supabase && window.SUPABASE_URL && !window.SUPABASE_URL.inc
 const db = ready ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
 async function loadPublic(){
  if(!db)return;
- const [rr,aa]=await Promise.all([db.from('reviews').select('id,name,rating,body,created_at').eq('status','published').order('created_at',{ascending:false}),db.from('awards').select('id,title,description,image_url,').eq('is_published',true).order('created_at',{ascending:false})]);
+ const [rr,aa]=await Promise.all([db.from('reviews').select('id,name,rating,body,created_at').eq('status','published').order('created_at',{ascending:false}),db.from('awards').select('id,title,description,image_url').eq('is_published',true).order('created_at',{ascending:false})]);
  if(!rr.error){const el=document.getElementById('reviewsList');el.innerHTML=rr.data.length?rr.data.map(r=>`<article class="review"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><b>${escapeHtml(r.name)}</b><p>${escapeHtml(r.body)}</p></article>`).join(''):'<p class="muted">Пока опубликованных отзывов нет.</p>'}
  if(!aa.error){const el=document.getElementById('awardsList');el.innerHTML=aa.data.length?aa.data.map(a=>`<article class="card award">${a.image_url?`<img src="${a.image_url}" alt="">`:''}<h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.description||'')}</p></article>`).join(''):'<p class="muted">Материалы скоро появятся.</p>'}
 }
