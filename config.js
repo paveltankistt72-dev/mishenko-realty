@@ -1,4 +1,2 @@
-// Supabase project configuration.
-// Publishable key is intended for browser use; keep RLS enabled and policies configured.
 window.SUPABASE_URL = "https://janhodrzfqkskpvmhtkb.supabase.co";
-window.SUPABASE_ANON_KEY = "sb_publishable_xWlpD_NsKzFVhxdIgK89Sg_TvKOS-pW";
+window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbmhvZHJ6ZnFrc2twdm1odGtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2MTY3MTEsImV4cCI6MjEwOTE5MjcxMX0.08iga4nPrgtqJEurzzthKSOC_jQcKJ107oY9hhegNVE";

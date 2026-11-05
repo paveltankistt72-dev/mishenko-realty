@@ -55,13 +55,39 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <script>
 const ready = window.supabase && window.SUPABASE_URL && !window.SUPABASE_URL.includes("ВСТАВЬ") && window.SUPABASE_ANON_KEY && !window.SUPABASE_ANON_KEY.includes("ВСТАВЬ");
 const db = ready ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
-async function loadPublic(){
- if(!db)return;
- const [rr,aa]=await Promise.all([db.from('reviews').select('id,name,rating,body,created_at').eq('status','published').order('created_at',{ascending:false}),db.from('awards').select('id,title,description,image_url').eq('is_published',true).order('created_at',{ascending:false})]);
- if(!rr.error){const el=document.getElementById('reviewsList');el.innerHTML=rr.data.length?rr.data.map(r=>`<article class="review"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><b>${escapeHtml(r.name)}</b><p>${escapeHtml(r.body)}</p></article>`).join(''):'<p class="muted">Пока опубликованных отзывов нет.</p>'}
- el.innerHTML=aa.data.length?aa.data.map(a=>`<article class="card award">${a.image_url?`<a href="${a.image_url}" target="_blank" rel="noopener"><img src="${a.image_url}" alt="${escapeHtml(a.title)}"></a>`:''}<h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.description||'Профессиональное достижение')}</p></article>`).join(''):'<p class="muted">Наград пока нет</p>';
-}
 function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function loadPublic(){
+ const awardsEl=document.getElementById('awardsList');
+ if(!db){
+  if(!window.supabase){awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: не загрузилась библиотека Supabase (проверьте интернет или отключите блокировщик рекламы и обновите страницу).</p>';}
+  else if(!window.SUPABASE_URL||!window.SUPABASE_ANON_KEY){awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: файл config.js не найден или в нём нет SUPABASE_URL и SUPABASE_ANON_KEY. Файл должен лежать в репозитории рядом с index.html.</p>';}
+  else{awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: в файле config.js остались заглушки «ВСТАВЬ». Нужно вписать настоящие SUPABASE_URL и SUPABASE_ANON_KEY.</p>';}
+  return;
+ }
+ try{
+  const [rr,aa]=await Promise.all([
+   db.from('reviews').select('id,name,rating,body,created_at').eq('status','published').order('created_at',{ascending:false}),
+   db.from('awards').select('id,title,description,image_url').eq('is_published',true).order('created_at',{ascending:false})
+  ]);
+  if(!rr.error){
+   const el=document.getElementById('reviewsList');
+   el.innerHTML=rr.data.length?rr.data.map(r=>`<article class="review"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><b>${escapeHtml(r.name)}</b><p>${escapeHtml(r.body)}</p></article>`).join(''):'<p class="muted">Пока опубликованных отзывов нет.</p>';
+  }
+  if(aa.error){
+   console.error(aa.error);
+   awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: база вернула ошибку при загрузке наград: '+escapeHtml(aa.error.message)+'</p>';
+   return;
+  }
+  if(!aa.data.length){
+   awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: подключение к базе работает, но опубликованных наград не найдено. Возможные причины: у записей в таблице awards поле is_published не включено, либо в Supabase нет правила (policy), разрешающего чтение таблицы awards посетителям сайта.</p>';
+   return;
+  }
+  awardsEl.innerHTML=aa.data.map(a=>`<article class="card award">${a.image_url?`<a href="${a.image_url}" target="_blank" rel="noopener"><img src="${a.image_url}" alt="${escapeHtml(a.title)}" onerror="this.outerHTML='<p class=muted>ДИАГНОСТИКА: картинка не открывается. Проверьте, что хранилище (bucket) в Supabase Storage публичное.</p>'"></a>`:''}<h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.description||'Профессиональное достижение')}</p></article>`).join('');
+ }catch(err){
+  console.error(err);
+  awardsEl.innerHTML='<p class="muted">ДИАГНОСТИКА: ошибка при загрузке: '+escapeHtml(err.message)+'</p>';
+ }
+}
 document.getElementById('reviewForm').addEventListener('submit',async e=>{e.preventDefault();const n=document.getElementById('formNotice');if(!db){n.textContent='Сайт ещё не подключён к базе отзывов. Форма заработает после настройки сервера.';return}const f=new FormData(e.target);const {error}=await db.from('reviews').insert({name:f.get('name'),rating:Number(f.get('rating')),body:f.get('body'),status:'pending'});n.textContent=error?'Не удалось отправить отзыв. Попробуйте позже.':'Спасибо! Отзыв отправлен на проверку.';if(!error)e.target.reset()});
 loadPublic();
 </script></body></html>
