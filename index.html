@@ -35,6 +35,16 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 .lb button{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:0;font-size:30px;line-height:1;width:48px;height:48px;cursor:pointer;border-radius:50%}
 .lb .lbx{top:16px;right:16px}.lb .lbp{left:12px;top:50%;transform:translateY(-50%)}.lb .lbn{right:12px;top:50%;transform:translateY(-50%)}
 @media(max-width:600px){.shot{flex-basis:62%}.lb .lbp{left:4px}.lb .lbn{right:4px}}
+.tile.feature{grid-column:1/-1;display:grid;grid-template-columns:.8fr 1.7fr;gap:44px;align-items:start;padding:34px 28px}
+.tile.wide{grid-column:span 2}
+.steps{list-style:none;margin:0;padding:0;columns:2;column-gap:40px;counter-reset:st}
+.steps li{counter-increment:st;display:flex;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line);break-inside:avoid;color:#e4e3dc;font-size:15px}
+.steps li::before{content:counter(st,decimal-leading-zero);color:var(--accent);font:14px Georgia;min-width:24px}
+@media(max-width:760px){.tile.feature{grid-template-columns:1fr;gap:14px;padding:26px 22px}.tile.wide{grid-column:auto}.steps{columns:1}}
+.badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.badge{border:1px solid #8a7658;padding:12px 16px;max-width:230px}
+.badge strong{display:block;font:30px Georgia;color:var(--accent);font-weight:normal}
+.badge span{display:block;font-size:12px;color:var(--muted);line-height:1.4}
 </style>
 <script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -42,14 +52,18 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <header><div class="wrap nav"><a class="brand" href="#">ПАВЕЛ МИЩЕНКО<small>НЕДВИЖИМОСТЬ В ПЕТЕРБУРГЕ</small></a><nav class="navlinks"><a href="#services">Услуги</a><a href="#about">Обо мне</a><a href="#album">Отзывы</a><a href="#contacts">Контакты</a></nav><a href="tel:+79818759080">Позвонить</a></div></header>
 <main>
 <section class="hero"><div class="wrap heroGrid"><div><div class="eyebrow">Санкт-Петербург · Ленинградская область</div><h1>Недвижимость без <em>красивых сказок.</em></h1><p class="lead">Я Павел Мищенко, риелтор. Помогаю покупать и продавать квартиры. Говорю как есть: что сработает, а что нет. Лично веду задачу — от первого разговора до завершения сделки.</p><a class="btn" href="https://t.me/pavel_mishenko">Написать в Telegram</a><a class="btn alt" href="#services">Мои услуги</a></div><img class="photo" src="pavel-mishenko-portrait.png" alt="Павел Мищенко"></div></section>
-<div class="stats"><div class="wrap statsGrid"><div class="stat"><strong>5 лет</strong><span>опыт в недвижимости — подтвердить перед публикацией</span></div><div class="stat"><strong>0 ₽</strong><span>комиссия покупателя новостройки — по условиям сотрудничества</span></div><div class="stat"><strong>100+</strong><span>застройщиков-партнёров — подтвердить перед публикацией</span></div></div></div>
 <section id="services"><div class="wrap"><div class="eyebrow2">Услуги</div><h2>Решаю задачу целиком,<br>а не отдельный этап.</h2><div class="grid">
-<div class="tile"><small>01 / ПРОДАЖА</small><h3>Продажа квартиры</h3><p>Оценка по рынку, подготовка объявления, показы, переговоры и сопровождение до расчёта.</p></div>
-<div class="tile"><small>02 / ПОКУПКА</small><h3>Вторичный рынок</h3><p>Подбор вариантов, проверка документов и истории владения, переговоры и безопасный расчёт.</p></div>
-<div class="tile"><small>03 / НОВОСТРОЙКИ</small><h3>Покупка у застройщика</h3><p>Сравнение проектов, планировок, цен и акций. Условия вознаграждения уточняются до работы.</p></div>
-<div class="tile"><small>04 / ПРАВО</small><h3>Сопровождение сделки</h3><p>Проверка документов, договоры, организация расчётов и регистрация перехода права.</p></div>
+<div class="tile feature"><div><small>01 / ПРОДАЖА</small><h3>Продажа квартиры</h3><p>Весь путь от оценки до передачи квартиры: десять шагов, каждый под контролем.</p></div>
+<ol class="steps"><li>Оценка стоимости</li><li>Подготовка квартиры к продаже</li><li>Профессиональная съёмка</li><li>Продвижение объявления</li><li>Обработка звонков покупателей</li><li>Переговоры</li><li>Показ квартиры</li><li>Проверка документов</li><li>Подготовка к сделке</li><li>Передача квартиры</li></ol></div>
+<div class="tile feature"><div><small>02 / ПОКУПКА</small><h3>Подбор квартиры на вторичном рынке</h3><p>От понимания ваших целей до получения ключей.</p></div>
+<ol class="steps"><li>Анализ целей покупателя</li><li>Подбор квартиры</li><li>Просмотр квартир</li><li>Проверка документов и собственника</li><li>Уведомление о рисках</li><li>Подготовка ПДКП и ДКП</li><li>Сопровождение на сделке до получения ключей</li></ol></div>
+<div class="tile feature"><div><small>03 / НОВОСТРОЙКИ</small><h3>Покупка новостройки</h3><p>Для вас без комиссии. Работаю только с проверенными застройщиками.</p>
+<div class="badges"><div class="badge"><strong>0 %</strong><span>комиссия для покупателя</span></div><div class="badge"><strong>100 %</strong><span>аккредитованные застройщики, которые сдают свои проекты</span></div></div></div>
+<ol class="steps"><li>Подбор проекта под ваши цели и бюджет</li><li>Сравнение жилых комплексов, застройщиков и планировок</li><li>Актуальные цены, акции и условия рассрочки</li><li>Помощь с выбором квартиры: этаж, вид, ориентация</li><li>Организация просмотров на объекте</li><li>Проверка договора до подписания и объяснение рисков</li><li>Подбор ипотечной программы и подача заявки</li><li>Сопровождение сделки и регистрации</li><li>Помощь с приёмкой квартиры и получением ключей</li></ol></div>
+<div class="tile feature"><div><small>04 / ПРАВО</small><h3>Юридическое сопровождение</h3><p>Проверяю объект и собственника до сделки и сопровождаю её до регистрации права.</p></div>
+<ol class="steps"><li>Проверка объекта на обременения, аресты и залоги</li><li>Проверка собственника на банкротство</li><li>Проверка собственника по исполнительным производствам и розыску</li><li>Анализ истории владения и прежних сделок</li><li>Проверка согласий супругов и прав зарегистрированных лиц</li><li>Подготовка и проверка договоров</li><li>Запись на сделку и организация подписания</li><li>Сопровождение на сделке и при регистрации права</li></ol></div>
 <div class="tile"><small>05 / ИПОТЕКА</small><h3>Ипотечное решение</h3><p>Подбор подходящей программы и помощь с подачей заявки в банки.</p></div>
-<div class="tile"><small>06 / КОНСУЛЬТАЦИЯ</small><h3>Разбор ситуации</h3><p>Обсудим цель, сроки, бюджет и возможные риски до принятия решения.</p></div>
+<div class="tile wide"><small>06 / КОНСУЛЬТАЦИЯ</small><h3>Разбор ситуации</h3><p>Обсудим цель, сроки, бюджет и возможные риски до принятия решения.</p></div>
 </div></div></section>
 <section class="paper" id="about"><div class="wrap"><div class="eyebrow2">Подход</div><h2>Вы общаетесь<br>не с колл-центром.</h2><div class="two"><div><h3>Если вы продаёте</h3><p class="muted">Задача — не просто разместить объявление, а выстроить продажу с понятной ценой и контролируемым процессом.</p><ul><li>Оценка по текущим конкурентам</li><li>Подготовка объявления и рекламы</li><li>Показы и переговоры</li><li>Сопровождение до получения денег</li></ul></div><div><h3>Если вы покупаете</h3><p class="muted">Проверяем объект до выхода на сделку, чтобы риски не стали неприятным сюрпризом после регистрации.</p><ul><li>Проверка правоустанавливающих документов</li><li>Анализ истории владения и обременений</li><li>Переговоры и торг</li><li>Безопасная схема расчётов</li></ul></div></div></div></section>
 <section id="awards">
