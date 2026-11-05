@@ -23,7 +23,9 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 .car{position:absolute;top:110px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(17,19,17,.88);color:#fff;font-size:26px;line-height:1;cursor:pointer;z-index:2;box-shadow:0 0 0 1px #50544c}
 .car.prev{left:-10px}.car.next{right:-10px}.car[hidden]{display:none}
 @media(max-width:600px){#awardsList .card{flex-basis:80%}.car.prev{left:-6px}.car.next{right:-6px}}
-.album{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+#albumList{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:#50544c transparent}
+.shot{flex:0 0 240px;scroll-snap-align:start}
+.car.mid{top:140px}
 .shot{margin:0;border:1px solid var(--line);background:#191c19;cursor:zoom-in;padding:0;color:inherit;text-align:left;font:inherit}
 .shot img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top}
 .shot figcaption{padding:10px 12px;color:var(--muted);font-size:13px}
@@ -32,8 +34,7 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 .lb img{max-width:92vw;max-height:88vh;object-fit:contain}
 .lb button{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:0;font-size:30px;line-height:1;width:48px;height:48px;cursor:pointer;border-radius:50%}
 .lb .lbx{top:16px;right:16px}.lb .lbp{left:12px;top:50%;transform:translateY(-50%)}.lb .lbn{right:12px;top:50%;transform:translateY(-50%)}
-@media(max-width:900px){.album{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.album{grid-template-columns:repeat(2,1fr);gap:10px}.lb .lbp{left:4px}.lb .lbn{right:4px}}
+@media(max-width:600px){.shot{flex-basis:62%}.lb .lbp{left:4px}.lb .lbn{right:4px}}
 </style>
 <script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -68,7 +69,11 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
   <div class="wrap">
     <div class="eyebrow2">Реальные переписки</div>
     <h2>Отзывы клиентов</h2>
-    <div id="albumList" class="album"></div>
+    <div class="carousel">
+      <button class="car prev mid" id="alPrev" aria-label="Назад" hidden>‹</button>
+      <div id="albumList" class="album"></div>
+      <button class="car next mid" id="alNext" aria-label="Вперёд" hidden>›</button>
+    </div>
   </div>
 </section>
 <div id="lb" class="lb" hidden><button class="lbx" id="lbClose" aria-label="Закрыть">×</button><button class="lbp" id="lbPrev" aria-label="Назад">‹</button><img id="lbImg" alt=""><button class="lbn" id="lbNext" aria-label="Вперёд">›</button></div>
@@ -120,8 +125,8 @@ async function loadAlbum(){
 }
 loadAlbum();
 
-(function(){
- const list=document.getElementById('awardsList'),pv=document.getElementById('awPrev'),nx=document.getElementById('awNext');
+function initCarousel(listId,prevId,nextId){
+ const list=document.getElementById(listId),pv=document.getElementById(prevId),nx=document.getElementById(nextId);
  function upd(){const more=list.scrollWidth>list.clientWidth+4;pv.hidden=!more||list.scrollLeft<=4;nx.hidden=!more||list.scrollLeft+list.clientWidth>=list.scrollWidth-4}
  pv.onclick=()=>list.scrollBy({left:-list.clientWidth*0.8,behavior:'smooth'});
  nx.onclick=()=>list.scrollBy({left:list.clientWidth*0.8,behavior:'smooth'});
@@ -130,5 +135,7 @@ loadAlbum();
  new MutationObserver(()=>setTimeout(upd,50)).observe(list,{childList:true});
  list.addEventListener('load',()=>setTimeout(upd,50),true);
  upd();
-})();
+}
+initCarousel('awardsList','awPrev','awNext');
+initCarousel('albumList','alPrev','alNext');
 </script></body></html>
